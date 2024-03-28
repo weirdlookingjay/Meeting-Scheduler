@@ -1,6 +1,7 @@
 "use client";
 
 import LocationOption from "@/app/_utils/LocationOption";
+import ThemeOptions from "@/app/_utils/ThemeOptions";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +16,12 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 function MeetingForm() {
-  const [location, setLocation] = useState();
+  const [themeColor, setThemeColor] = useState();
+  const [eventName, setEventName] = useState();
+  const [duration, setDuration] = useState(30);
+  const [locationType, setLocationType] = useState();
+  const [locationUrl, setLocationUrl] = useState();
+
   return (
     <div className="p-8">
       <Link href={"/dashboard"}>
@@ -29,21 +35,32 @@ function MeetingForm() {
       </div>
       <div className="flex flex-col gap-3 my-4">
         <h2 className="font-bold">* Event Name</h2>
-        <Input placeholder="Name of your meeting event" />
+        <Input
+          placeholder="Name of your meeting event"
+          onChange={(event) => setEventName(event.target.value)}
+        />
 
         <h2>* Duration</h2>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="max-w-40">
-              30 Min
+              {duration} Min
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>15 Min</DropdownMenuItem>
-            <DropdownMenuItem>30 Min</DropdownMenuItem>
-            <DropdownMenuItem>45 Min</DropdownMenuItem>
-            <DropdownMenuItem>60 Min</DropdownMenuItem>
+            <DropdownMenuItem onClick={(event) => setDuration(15)}>
+              15 Min
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={(event) => setDuration(30)}>
+              30 Min
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={(event) => setDuration(45)}>
+              45 Min
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={(event) => setDuration(60)}>
+              60 Min
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -53,9 +70,9 @@ function MeetingForm() {
             <div
               className={`border flex flex-col justify-center items-center p-3 rounded-lg
              hover:bg-blue-100 hover:border-primary cursor-pointer ${
-               location == option.name && "bg-blue-100 border-primary"
+               locationType == option.name && "bg-blue-100 border-primary"
              }`}
-              onClick={() => setLocation(option.name)}
+              onClick={() => setLocationType(option.name)}
             >
               <Image
                 src={option.icon}
@@ -67,14 +84,34 @@ function MeetingForm() {
             </div>
           ))}
         </div>
-        {location && (
+        {locationType && (
           <>
-            <h2 className="font-bold">Add {location} Url</h2>
-            <Input placeholder="Add Url" />
+            <h2 className="font-bold">* Add {locationType} Url</h2>
+            <Input
+              placeholder="Add Url"
+              onChange={(event) => setLocationUrl(event.target.value)}
+            />
           </>
         )}
+        <h2 className="font-bold">Select Theme Color</h2>
+        <div className="flex justify-evenly">
+          {ThemeOptions.map((color, index) => (
+            <div
+              className={`h-7 w-7 rounded-full ${
+                themeColor == color && "border-4 border-black"
+              }`}
+              style={{ backgroundColor: color }}
+              onClick={() => setThemeColor(color)}
+            ></div>
+          ))}
+        </div>
       </div>
-      <Button className="w-full mt-9">Create</Button>
+      <Button
+        className="w-full mt-9"
+        disabled={!eventName || !duration || !locationType || !locationUrl}
+      >
+        Create
+      </Button>
     </div>
   );
 }
