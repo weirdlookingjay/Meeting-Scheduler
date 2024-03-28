@@ -34,7 +34,10 @@ function PreviewMeeting({ formValue }) {
   };
 
   return (
-    <div className="p-5 py-10 shadow-lg m-5 border-t-8">
+    <div
+      className="p-5 py-10 shadow-lg m-5 border-t-8"
+      style={{ borderTopColor: formValue?.themeColor }}
+    >
       <Image
         src="/logo-no-background.png"
         alt="Logo"
@@ -75,6 +78,7 @@ function PreviewMeeting({ formValue }) {
               selected={date}
               onSelect={setDate}
               className="rounded-md border mt-5"
+              disabled={(date) => date <= new Date()}
             />
           </div>
           <div
