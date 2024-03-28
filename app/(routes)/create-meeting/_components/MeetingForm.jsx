@@ -13,14 +13,24 @@ import { Input } from "@/components/ui/input";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function MeetingForm() {
+function MeetingForm({ setFormValue }) {
   const [themeColor, setThemeColor] = useState();
   const [eventName, setEventName] = useState();
   const [duration, setDuration] = useState(30);
   const [locationType, setLocationType] = useState();
   const [locationUrl, setLocationUrl] = useState();
+
+  useEffect(() => {
+    setFormValue({
+      eventName: eventName,
+      duration: duration,
+      locationType: locationType,
+      locationUrl: locationUrl,
+      themeColor: themeColor,
+    });
+  }, [eventName, duration, locationType, locationUrl, themeColor]);
 
   return (
     <div className="p-8">
@@ -68,6 +78,7 @@ function MeetingForm() {
         <div className="grid grid-cols-4 gap-3">
           {LocationOption.map((option, index) => (
             <div
+              key={index}
               className={`border flex flex-col justify-center items-center p-3 rounded-lg
              hover:bg-blue-100 hover:border-primary cursor-pointer ${
                locationType == option.name && "bg-blue-100 border-primary"
@@ -97,6 +108,7 @@ function MeetingForm() {
         <div className="flex justify-evenly">
           {ThemeOptions.map((color, index) => (
             <div
+              key={index}
               className={`h-7 w-7 rounded-full ${
                 themeColor == color && "border-4 border-black"
               }`}
