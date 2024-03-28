@@ -8,6 +8,7 @@ import {
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import MeetingType from "./meeting-type/page";
 
 function Dashboard() {
   const db = getFirestore(app);
@@ -25,6 +26,7 @@ function Dashboard() {
 
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
+      setLoading(false);
     } else {
       console.log("No such document!");
       setLoading(false);
@@ -38,8 +40,7 @@ function Dashboard() {
 
   return (
     <div>
-      Dashboard
-      <LogoutLink>Logout</LogoutLink>
+      <MeetingType />
     </div>
   );
 }
